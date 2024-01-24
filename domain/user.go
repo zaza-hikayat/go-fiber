@@ -18,4 +18,6 @@ type UserUseCase interface {
 	Authenticate(ctx context.Context, req request.SignReq) (user models.User, token string, err error)
 	ValidateUserToken(ctx context.Context, token string) (models.User, error)
 	RegisterUser(ctx context.Context, req request.RegisterReq) (response.UserLoginResp, error)
+	SendOtp(ctx context.Context, req request.SendOtpReq) (token string, err error)
+	VerifyOtp(ctx context.Context, req request.VerifyOtpReq) (err error)
 }

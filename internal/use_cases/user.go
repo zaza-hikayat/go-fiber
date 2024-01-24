@@ -12,7 +12,9 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"github.com/zaza-hikayat/go-fiber/configs"
 	"github.com/zaza-hikayat/go-fiber/domain"
+	constant "github.com/zaza-hikayat/go-fiber/internal/constants"
 	infra_error "github.com/zaza-hikayat/go-fiber/internal/infrastructure/errors"
+	"github.com/zaza-hikayat/go-fiber/internal/utility"
 
 	"github.com/zaza-hikayat/go-fiber/dto/models"
 	"github.com/zaza-hikayat/go-fiber/dto/request"
@@ -136,4 +138,26 @@ func (u *userUseCase) RegisterUser(ctx context.Context, req request.RegisterReq)
 	}
 	mapstructure.Decode(user, &resp)
 	return resp, nil
+}
+
+func (u *userUseCase) SendOtp(ctx context.Context, req request.SendOtpReq) (string, error) {
+	otpUser := utility.GenerateRandomNumber()
+	expiresTime := 5 * time.Minute
+	r := u.cacheRepo.Set(ctx, fmt.Sprintf("otp_user_%s", req.Email), otpUser, expiresTime)
+	if r.Err() != nil {
+		return constant.EMPTY_STR, r.Err()
+	}
+
+	// TODO send notification email or sms
+	return otpUser, nil
+}
+func (u *userUseCase) VerifyOtp(ctx context.Context, req request.VerifyOtpReq) (err error) {
+	r, err := u.cacheRepo.Get(ctx, fmt.Sprintf("otp_user_%s", req.Email)).Result()
+	if err != nil || r == constant.EMPTY_STR {
+		cerr := infra_error.NewCommonError(infra_error.INVALID_PAYLOAD, err)
+		cerr.SetSystemMessage("Invalid OTP token")
+		return cerr
+	}
+
+	return nil
 }

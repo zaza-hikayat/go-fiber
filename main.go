@@ -10,7 +10,6 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/zaza-hikayat/go-fiber/configs"
-	"github.com/zaza-hikayat/go-fiber/dto/models"
 	"github.com/zaza-hikayat/go-fiber/internal/infrastructure/database"
 
 	infra_logger "github.com/zaza-hikayat/go-fiber/internal/infrastructure/logger"
@@ -53,7 +52,6 @@ func main() {
 		JSONDecoder: json.Unmarshal,
 	})
 	rest.NewRouter(app, allUseCase)
-	dbConn.AutoMigrate(&models.User{})
 
 	// run http server
 	go func() {

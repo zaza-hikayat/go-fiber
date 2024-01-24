@@ -32,3 +32,25 @@ func (r RegisterReq) Validate() error {
 		validation.Field(&r.Password, validation.Required, validation.Length(6, 20)),
 	)
 }
+
+type SendOtpReq struct {
+	Email string `json:"email"`
+}
+
+func (r SendOtpReq) Validate() error {
+	return validation.ValidateStruct(&r,
+		validation.Field(&r.Email, validation.Required, is.Email),
+	)
+}
+
+type VerifyOtpReq struct {
+	Email string `json:"email"`
+	Otp   string `json:"otp"`
+}
+
+func (r VerifyOtpReq) Validate() error {
+	return validation.ValidateStruct(&r,
+		validation.Field(&r.Email, validation.Required, is.Email),
+		validation.Field(&r.Otp, validation.Required),
+	)
+}

@@ -15,6 +15,8 @@ type UserHandler interface {
 	Login(ctx *fiber.Ctx) error
 	Register(ctx *fiber.Ctx) error
 	GetMe(c *fiber.Ctx) error
+	SendOtp(c *fiber.Ctx) error
+	VerifyOtp(c *fiber.Ctx) error
 }
 
 type userHandler struct {
@@ -77,4 +79,22 @@ func (h *userHandler) GetMe(c *fiber.Ctx) error {
 	userJson := c.Locals(constant.X_USER)
 	_ = json.Unmarshal([]byte(userJson.(string)), &userModel)
 	return h.respClient.JSON(c, userModel, nil)
+}
+
+func (h *userHandler) SendOtp(c *fiber.Ctx) error {
+	req := new(request.SendOtpReq)
+	if err := c.BodyParser(req); err != nil {
+		cerr := infra_error.NewCommonError(infra_error.INVALID_PAYLOAD, err)
+		cerr.SetSystemMessage(err.Error())
+		return h.respClient.HttpError(c, cerr)
+	}
+	otp, err := h.userUseCase.SendOtp(c.Context(), *req)
+	if err != nil {
+		return h.respClient.HttpError(c, err)
+	}
+	return h.respClient.JSON(c, fiber.Map{"otp": otp}, nil)
+}
+
+func (h *userHandler) VerifyOtp(c *fiber.Ctx) error {
+	panic("unimplemented")
 }

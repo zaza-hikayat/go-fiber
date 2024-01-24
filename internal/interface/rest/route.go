@@ -21,6 +21,7 @@ func NewRouter(app *fiber.App, useCases usecases.AllUseCases) {
 	app.Use(fiber_logger.New(fiber_logger.Config{
 		Format: "${locals:requestid} ${status} - ${method} ${path}​ ${latency}\n",
 	}))
+	midAuth := middleware.Authenticate(useCases.UserUseCase)
 
 	api := app.Group("/api")
 	v1 := api.Group("/v1", func(c *fiber.Ctx) error {
@@ -30,5 +31,7 @@ func NewRouter(app *fiber.App, useCases usecases.AllUseCases) {
 
 	v1.Post("/login", authHandler.Login)
 	v1.Post("/register", authHandler.Register)
-	v1.Get("/me", middleware.Authenticate(useCases.UserUseCase), authHandler.GetMe)
+	v1.Get("/me", midAuth, authHandler.GetMe)
+	v1.Get("/send-otp", authHandler.GetMe)
+
 }
