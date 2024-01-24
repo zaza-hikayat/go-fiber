@@ -96,5 +96,17 @@ func (h *userHandler) SendOtp(c *fiber.Ctx) error {
 }
 
 func (h *userHandler) VerifyOtp(c *fiber.Ctx) error {
-	panic("unimplemented")
+	req := new(request.VerifyOtpReq)
+	if err := c.BodyParser(req); err != nil {
+		cerr := infra_error.NewCommonError(infra_error.INVALID_PAYLOAD, err)
+		cerr.SetSystemMessage(err.Error())
+		return h.respClient.HttpError(c, cerr)
+	}
+	err := h.userUseCase.VerifyOtp(c.Context(), *req)
+	if err != nil {
+		cerr := infra_error.NewCommonError(infra_error.INVALID_PAYLOAD, err)
+		cerr.SetSystemMessage(err.Error())
+		return h.respClient.HttpError(c, cerr)
+	}
+	return h.respClient.Message("Token Verified").JSON(c, fiber.Map{}, nil)
 }

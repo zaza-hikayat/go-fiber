@@ -19,5 +19,5 @@ Content-Type: application/json
 
 ### get mes121
 GET http://localhost:8080/api/v1/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDYwMjA3NjIsImlkIjoxLCJuYmYiOjE3MDYwMjA3NjJ9.Ul5WwwIzFMu6bOsHHEy9rLv_xC22rxrmVR1B5aG3xpw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDYwODkxMTAsImlkIjoxLCJuYmYiOjE3MDYwODkxMTB9.9T0bi3-TjKXBrOLS2LhoRZ2civy0DTS4pKObk-exlX4
 

@@ -10,7 +10,7 @@ import (
 type IResponseClient interface {
 	JSON(c *fiber.Ctx, data interface{}, meta *Meta) error
 	HttpError(c *fiber.Ctx, err error) error
-	SetMessage(msg string) *responseClient
+	Message(msg string) *responseClient
 	SetStatus(code int) *responseClient
 }
 
@@ -49,7 +49,7 @@ func (*responseClient) HttpError(c *fiber.Ctx, err error) error {
 	c.Status(respError.HttpStatusNumber).JSON(respError)
 	return nil
 }
-func (r *responseClient) SetMessage(msg string) *responseClient {
+func (r *responseClient) Message(msg string) *responseClient {
 	r.message = msg
 	return r
 }
