@@ -1,0 +1,23 @@
+### get signins
+POST http://localhost:8080/api/v1/login
+Content-Type: application/json
+
+{
+  "email": "tester@gmail.com",
+  "password": "123456"
+}
+
+### registera
+POST http://localhost:8080/api/v1/register
+Content-Type: application/json
+
+{
+  "email": "tester122@gmail.com",
+  "password": "123456",
+  "fullname": "Tester Name"
+}
+
+### get mes121
+GET http://localhost:8080/api/v1/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDYwMjA3NjIsImlkIjoxLCJuYmYiOjE3MDYwMjA3NjJ9.Ul5WwwIzFMu6bOsHHEy9rLv_xC22rxrmVR1B5aG3xpw
+
